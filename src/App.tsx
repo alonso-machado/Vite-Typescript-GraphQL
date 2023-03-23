@@ -1,34 +1,50 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { useQuery } from "@apollo/client";
+import INFO_PERSON from "./service/query/RickMortyQuery";
 
 function App() {
   const [count, setCount] = useState(0)
 
+  const { loading, error, data } = useQuery(INFO_PERSON);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+  
+  if (error) {
+    return <p>an error occurred...</p>;
+  }
+
   return (
+    <>
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <h1>Vite with React</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </div>
+    <section className="parent">
+    {data.characters.results.map((person, index) => (
+      <div className="card" key={person.name}>
+        <img src={person.image} alt="Avatar" style={{ width: "100%" }} />
+        <div className="container">
+          <h4>
+            <b>{person.name}</b>
+          </h4>
+          <p>
+            <b>GENDER:</b> {person.gender}
+          </p>
+          <p>
+            <b>SPECIE:</b> {person.species}
+          </p>
+        </div>
+      </div>
+    ))}
+  </section>
+  </>
   )
 }
 
