@@ -1,3 +1,3 @@
-# Vite-Typescript-GraphQL
+Project to use GraphQL and Vite 
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/vitejs-vite-tgwnxe)
+Vite uses esbuild instead of webpack used by Create React App

@@ -1,12 +1,24 @@
-import { useState } from 'react'
-import './App.css'
+import React from "react";
 import { useQuery } from "@apollo/client";
 import INFO_PERSON from "./service/query/RickMortyQuery";
+import { Person } from './model/person';
+
+import { Box, CardContent, CardMedia, Paper, Button, Typography, IconButton } from "@mui/material";
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { useTheme } from "@emotion/react";
+import { ColorModeContext } from "./ToggleColorMode";
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
   const { loading, error, data } = useQuery(INFO_PERSON);
+  
+  const colorMode = React.useContext(ColorModeContext);
+  
+  const theme = useTheme()
+
 
   if (loading) {
     return <p>Loading...</p>;
@@ -17,35 +29,42 @@ function App() {
   }
 
   return (
-    <>
-    <div className="App">
-      <h1>Vite with React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
-    </div>
-    <section className="parent">
-    {data.characters.results.map((person, index) => (
-      <div className="card" key={person.name}>
-        <img src={person.image} alt="Avatar" style={{ width: "100%" }} />
-        <div className="container">
-          <h4>
-            <b>{person.name}</b>
-          </h4>
-          <p>
-            <b>GENDER:</b> {person.gender}
-          </p>
-          <p>
-            <b>SPECIE:</b> {person.species}
-          </p>
+    <Box>
+        <div style={{ display: 'flex' }}>
+          <Typography component="div" variant="h4">This website is using {theme.palette.mode} mode </Typography>
+          <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
         </div>
-      </div>
-    ))}
-  </section>
-  </>
+          <Box className="parent" sx={{ display: 'flex', flexDirection: 'column' }}>
+          {data.characters.results.map( (person: Person, idx: string)  => (
+
+            <Paper elevation={3} className="card" aria-details={person.name + idx} key={person.name + idx} sx={{ display: 'flex', flexDirection: 'column', width: "400px", margin: "1em 10%"}}>
+            
+            <CardMedia
+              component="img"
+              height="150"
+              image={person.image}/>
+
+            <CardContent sx={{ flex: '1 0 auto' }}>
+            
+              <Typography component="div" variant="h5">
+                  {person.name}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary" component="div">
+                  GENDER: {person.gender}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary" component="div">
+                  SPECIE: {person.species}
+                </Typography>
+              </CardContent>
+            </Paper>
+          )
+          )}
+        </Box>
+    </Box>
   )
 }
 
 export default App
+
