@@ -20,7 +20,7 @@ function ToggleColorMode() {
     []
   )
 
-  const theme = React.useMemo(
+  const mytheme = React.useMemo(
     () =>
       createTheme({
         palette: {
@@ -32,7 +32,7 @@ function ToggleColorMode() {
 
   return (
     <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={mytheme}>
         <App />
       </ThemeProvider>
     </ColorModeContext.Provider>

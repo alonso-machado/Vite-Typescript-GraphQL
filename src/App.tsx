@@ -16,12 +16,14 @@ import Brightness7Icon from '@mui/icons-material/Brightness7'
 import { useTheme } from '@emotion/react'
 import { ColorModeContext } from './ToggleColorMode'
 
+import { ThemeOptions } from '@mui/material/styles/createTheme'
+
 function App() {
   const { loading, error, data } = useQuery(INFO_PERSON)
 
   const colorMode = React.useContext(ColorModeContext)
 
-  const theme = useTheme()
+  const theme: ThemeOptions = useTheme()
 
   if (loading) {
     return <p>Loading...</p>
@@ -35,14 +37,14 @@ function App() {
     <Box>
       <div style={{ display: 'flex' }}>
         <Typography component="div" variant="h4">
-          This website is using {theme.palette.mode} mode{' '}
+          This website is using {theme.palette?.mode} mode{' '}
         </Typography>
         <IconButton
           sx={{ ml: 1 }}
           onClick={colorMode.toggleColorMode}
           color="inherit"
         >
-          {theme.palette.mode === 'dark' ? (
+          {theme.palette?.mode === 'dark' ? (
             <Brightness7Icon />
           ) : (
             <Brightness4Icon />
@@ -55,7 +57,7 @@ function App() {
             elevation={3}
             className="card"
             aria-details={person.name + idx}
-            key={person.name + idx}
+            key={person.name}
             sx={{
               display: 'flex',
               flexDirection: 'column',
